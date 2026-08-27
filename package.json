@@ -18,10 +18,8 @@
     "typescript": "^7.0.2"
   },
   "scripts": {
-    "dev": "bun --watch electron src/index.ts",
     "build": "bun build ./src/index.ts --outdir ./dist --target node --external electron",
-    "start": "electron dist/index.js",
-    "build:start": "bun run build && bun run start",
+    "start": "bun run build && electron dist/index.js",
     "make" : "rm -rf release && bun run build && electron-builder --win portable" 
   },
   "dependencies": {
