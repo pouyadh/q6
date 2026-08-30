@@ -23,7 +23,7 @@ class ScrCpy {
         await delay(1000);
         try {
             return await new Promise<void>((res,rej) => {
-                this.process = spawn('scrcpy');
+                this.process = spawn('scrcpy',['--power-off-on-close']);
                 this.readlineOut = readline.createInterface({
                     input: this.process.stdout,
                     crlfDelay: Infinity
