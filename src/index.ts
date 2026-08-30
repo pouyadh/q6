@@ -23,7 +23,7 @@ class ScrCpy {
         await delay(1000);
         try {
             return await new Promise<void>((res,rej) => {
-                this.process = spawn('scrcpy',['--power-off-on-close']);
+                this.process = spawn('scrcpy',['--power-off-on-close','--verbosity=debug']);
                 this.readlineOut = readline.createInterface({
                     input: this.process.stdout,
                     crlfDelay: Infinity
@@ -77,6 +77,7 @@ class Q6 {
         }
         ScrCpy.readlineOut?.on('line',(data) => {
             if (data == '[server] INFO: Device: [LGE] lge LG-M700 (Android 8.1.0)') this .setIsConnected(true);
+            if (data == 'DEBUG: User requested to quit') this ._autoReconnect = false;
             console.log('🟢',data);
         })
         ScrCpy.readlineErr?.on('line',(data)=>{
