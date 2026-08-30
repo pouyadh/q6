@@ -77,11 +77,11 @@ class Q6 {
         }
         ScrCpy.readlineOut?.on('line',(data) => {
             if (data == '[server] INFO: Device: [LGE] lge LG-M700 (Android 8.1.0)') this .setIsConnected(true);
-            console.log(data);
+            console.log('🟢',data);
         })
         ScrCpy.readlineErr?.on('line',(data)=>{
             if (data == 'WARN: Device disconnected') this .setIsConnected(false);
-            console.error(data);
+            console.error('🔴',data);
         })
         ScrCpy.process?.once('exit',(code) => {
             this .setIsConnected(false);
