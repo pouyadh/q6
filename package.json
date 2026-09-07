@@ -20,7 +20,7 @@
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target node --external electron",
     "start": "bun run build && electron dist/index.js",
-    "make" : "rm -rf release && bun run build && electron-builder --win portable" 
+    "make" : "rm -rf release && bun run build && electron-builder --win nsis" 
   },
   "dependencies": {
     "tsx": "^4.23.12"
@@ -30,7 +30,21 @@
     "productName": "Q6",
     "win": {
       "icon" : "tray.ico",
-      "target": "portable"
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Q6",
+      "installerIcon": "tray.ico",
+      "uninstallerIcon": "tray.ico",
+      "installerHeaderIcon": "tray.ico",
+      "include": "installer.nsh",
+      "installerLanguages" : "en-US",
+      "guid": "com.pds.q6"
     },
     "files": [
       "dist/**/*",              
