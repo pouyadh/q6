@@ -1,44 +1,35 @@
-import { app, Tray, Menu, nativeImage } from 'electron';
-import path from 'node:path';
-import ADB from './ADB/index.js';
-import Q6 from './Q6/index.js';
-import AndroidDevice from './AndroidDevice/index.js';
-
-
 /* cspell:words scrcpy */
-let tray : Tray | null = null;
-app.whenReady().then(() => {
-    const iconPath = path.join(__dirname, '../tray.png');
-    const icon = nativeImage.createFromPath(iconPath);
-    tray = new Tray(icon);
-    tray.setToolTip('Android Device');
-    const andriodDevice = new AndroidDevice("5731")
-    function setTrayContextMenu() {
-        let contextMenu : Electron.Menu;
-        if (Q6.isConnected) {
-            contextMenu = Menu.buildFromTemplate([
-                { label: 'Disconnect', click: () => { Q6.disconnect() } },
-                { label: 'Quit', click: () => { Q6.disconnect(); app.quit(); } }
-            ]);
-        } else {
-            contextMenu = Menu.buildFromTemplate([
-                
-                { label: 'Connect', click: () => { Q6.connect() } },
-                { label: 'Connect (Auto Reconnect)', click: () => { Q6.connect(true) } },
-                { type: 'separator' },
-                { label: 'Quit', click: () => { app.quit(); } }
-            ]);
-        }
-        if (contextMenu) tray?.setContextMenu(contextMenu);
-    }
-    setTrayContextMenu();
-    Q6.onConnectionStatusChanged = function (isConnected:boolean) {
-        setTrayContextMenu();
-    }
+import { app, Tray, Menu, nativeImage, BrowserWindow, dialog, ipcMain } from 'electron';
+import path from 'node:path';
+import singleInstance from './util/singleInstance.js';
+import getTrayContextMenu from './AndroidDevice/static/getTrayContextMenu.js';
+import AndroidDevice from './AndroidDevice/AndroidDevice.js';
 
-    // Click event
-    tray.on('click', () => {
-        Q6.connect();
-    });
-});
 
+let tray: Electron.Tray | null = null;
+
+const showTrayContextMenu = async () => {
+  try {
+    tray?.popUpContextMenu(await getTrayContextMenu());
+  } catch (error) {
+    console.error('Failed to refresh Android device tray menu:', error);
+  }
+};
+
+singleInstance(showTrayContextMenu);
+
+
+// @ts-ignore
+app.on('window-all-closed', (e: Electron.Event) => e.preventDefault());
+
+(async () => {
+
+  await app.whenReady();
+  const iconPath = path.join(__dirname, '../tray.png');
+  const icon = nativeImage.createFromPath(iconPath);
+  tray = new Tray(icon);
+  tray.setToolTip('Android Device');
+  tray.on('click', () => void showTrayContextMenu());
+  tray.on('right-click', () => void showTrayContextMenu());
+  
+})();

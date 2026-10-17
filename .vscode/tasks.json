@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-electron",
+            "type": "shell",
+            "command": "bun",
+            "args": [
+                "run",
+                "build"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

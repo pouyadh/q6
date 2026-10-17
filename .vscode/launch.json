@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Electron: Main",
+            "type": "node",
+            "request": "launch",
+
+            "runtimeExecutable": "${workspaceFolder}/node_modules/electron/dist/electron.exe",
+
+            "args": [
+                "${workspaceFolder}/dist/index.js"
+            ],
+
+            "cwd": "${workspaceFolder}",
+
+            "preLaunchTask": "build-electron",
+
+            "sourceMaps": true,
+
+            "outFiles": [
+                "${workspaceFolder}/dist/**/*.js"
+            ],
+
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/dist/**/*.js",
+                "${workspaceFolder}/src/**/*.ts"
+            ],
+
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+
+            "console": "integratedTerminal"
+        }
+    ]
+}

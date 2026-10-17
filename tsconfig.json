@@ -13,7 +13,7 @@
     "sourceMap": true,
     "declaration": false,
     "lib": ["ESNext", "DOM"],
-    "types": ["node","bun"]
+    "types": ["node","bun"],
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist","release"]
